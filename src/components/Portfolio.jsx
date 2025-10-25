@@ -1,4 +1,5 @@
 import React from "react";
+// import "./App.css";
 
 export default function Portfolio({ holdings, cash, assets }) {
   const assetMap = Object.fromEntries(assets.map(a => [a.id, a]));
@@ -9,23 +10,27 @@ export default function Portfolio({ holdings, cash, assets }) {
   const netWorth = cash + totalHoldingsValue;
 
   return (
-    <div className="bg-white/5 rounded-lg p-4">
-      <h3 className="text-lg font-semibold">Portfolio</h3>
-      <div className="mt-2 text-sm text-neutral-300">Cash: ₹{Number(cash).toLocaleString()}</div>
-      <div className="text-sm text-neutral-300">Holdings value: ₹{Number(totalHoldingsValue).toLocaleString()}</div>
-      <div className="text-lg font-bold mt-2">Net Worth: ₹{Number(netWorth).toLocaleString()}</div>
-
-      <div className="mt-4">
-        <h4 className="font-medium mb-2">Positions</h4>
-        <ul className="text-sm space-y-2">
-          {Object.entries(holdings).length === 0 && <li className="text-neutral-400">No positions</li>}
-          {Object.entries(holdings).map(([id, qty]) => (
-            <li key={id} className="flex justify-between">
-              <div>{id} × {qty}</div>
-              <div>₹{Number((assetMap[id]?.price || 0) * qty).toLocaleString()}</div>
-            </li>
-          ))}
-        </ul>
+    <div className="portfolio">
+      <h3>Portfolio</h3>
+      <p>Cash: ₹{Number(cash).toLocaleString()}</p>
+      <p>Holdings value: ₹{Number(totalHoldingsValue).toLocaleString()}</p>
+      <h4>Net Worth: ₹{Number(netWorth).toLocaleString()}</h4>
+      <div className="positions">
+        <h4>Positions</h4>
+        {Object.entries(holdings).length === 0 ? (
+          <p className="muted">No positions</p>
+        ) : (
+          <ul>
+            {Object.entries(holdings).map(([id, qty]) => (
+              <li key={id}>
+                <span>
+                  {id} × {qty}
+                </span>
+                <span>₹{Number((assetMap[id]?.price || 0) * qty).toLocaleString()}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
